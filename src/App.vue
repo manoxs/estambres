@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <img src="./assets/logo_estambrescom_v10_Logo_2.png" alt="" width="320px" height="auto">
+    <header id="text">
+      <img src="./assets/logo_estambrescom_v10_Logo_2.png" alt="" width="320px" height="auto">
+    </header>
     <router-view/>
   </div>
 </template>
@@ -13,11 +15,21 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 15px;
+  margin-top: 10px;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  /* -webkit-flex-flow: row wrap; */
+}
+#text {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  padding: 10px;
 }
 </style>
