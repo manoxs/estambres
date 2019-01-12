@@ -1,6 +1,7 @@
 <template>
   <content>
-    <gallery :images="images" :index="index" @close="index = null"></gallery>
+    <!-- {{ processImages }}  // json debug -->
+    <gallery :processImages="images" :index="index" @close="index = null"></gallery>
     <div
       class="image"
       v-for="(image, imageIndex) in images"
@@ -13,40 +14,36 @@
 
 <script>
 import VueGallery from 'vue-gallery'
+import axios from 'axios'
+import _ from 'lodash'
+
 export default {
   name: 'Blog',
   data: function () {
     return {
-      images: [
-        'https://placekitten.com/801/800',
-        'https://placekitten.com/802/800',
-        'https://placekitten.com/803/800',
-        'https://placekitten.com/804/800',
-        'https://placekitten.com/805/800',
-        'https://placekitten.com/806/800',
-        'https://placekitten.com/807/800',
-        'https://placekitten.com/808/800',
-        'https://placekitten.com/809/800',
-        'https://placekitten.com/810/800',
-        'https://placekitten.com/811/800',
-        'https://placekitten.com/812/800',
-        'https://placekitten.com/813/800',
-        'https://placekitten.com/814/800',
-        'https://placekitten.com/815/800',
-        'https://placekitten.com/816/800',
-        'https://placekitten.com/817/800',
-        'https://placekitten.com/818/800',
-        'https://placekitten.com/819/800',
-        'https://placekitten.com/820/800',
-        'https://placekitten.com/821/800',
-        'https://placekitten.com/822/800',
-        'https://placekitten.com/823/800',
-        'https://placekitten.com/824/800'
-      ],
+      images: [],
       index: null
     }
   },
 
+  methods: {
+    fetchImgs: function () {
+      axios.get('http://104.248.234.33:8080/estambres-gallery-service/photos').then((response) => (
+        this.images = response.data
+      ), (error) => {
+        console.log(error)
+      })
+    }
+  },
+  computed: {
+    // return _.map(this.images, el => _.pick(el, ['url']))
+    processImages: function () {
+      return _.map(this.images, el => _.filter(el, function (value, key) { return key.startsWith('url') }))
+    }
+  },
+  mounted: function () {
+    this.fetchImgs()
+  },
   components: {
     'gallery': VueGallery
   }
