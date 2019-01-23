@@ -1,10 +1,10 @@
 <template>
-  <content>
-    <!-- {{ processImages }}  // json debug -->
-    <gallery :processImages="images" :index="index" @close="index = null"></gallery>
+   <content>
+     <!-- {{processImages}} -->
+    <gallery :images="processImages" :index="index" @close="index = null"></gallery>
     <div
       class="image"
-      v-for="(image, imageIndex) in images"
+      v-for="(image, imageIndex) in processImages"
       :key="imageIndex"
       @click="index = imageIndex"
       :style="{ backgroundImage: 'url(' + image + ')' }"
@@ -36,9 +36,9 @@ export default {
     }
   },
   computed: {
-    // return _.map(this.images, el => _.pick(el, ['url']))
     processImages: function () {
-      return _.map(this.images, el => _.filter(el, function (value, key) { return key.startsWith('url') }))
+      let imagesData = this.images
+      return _.map(imagesData, el => _.filter(el, function (value, key) { return key.startsWith('url') })).flat(1)
     }
   },
   mounted: function () {
