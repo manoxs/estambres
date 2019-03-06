@@ -14,19 +14,21 @@ export default {
 </script>
 
 <style>
+@import url(http://fonts.googleapis.com/css?family=Karla:400,700);
+
 #app {
   display: flex;
   flex-wrap: wrap;
-  padding-left: 15px;
-  margin-top: 10px;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  flex-direction: column;
+  padding: 10px 35px 0px 45px;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
-  /* -webkit-flex-flow: row wrap; */
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
 }
 #text {
   text-align: center;
