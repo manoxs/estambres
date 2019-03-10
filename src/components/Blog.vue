@@ -1,35 +1,19 @@
 <template>
   <div>
     <div class="columns">
+      <div class="tags">Marca</div>
       <div class="column is-half">
-          <p class="marca">Marca</p>
-            <button class="buttons">NE_9</button>
-            <button class="buttons">NE_90</button>
-            <button class="buttons">NE_93</button>
-            <button class="buttons">NE_950</button>
-            <button class="buttons">NE_9</button>
-            <button class="buttons">NE_90</button>
-            <button class="buttons">NE_93</button>
-            <button class="buttons">NE_950</button>
-            <button class="buttons">NE_9</button>
-            <button class="buttons">NE_90</button>
-            <button class="buttons">NE_93</button>
-            <button class="buttons">NE_950</button>
+        <div v-for="(marca, indexMarca) in marcas" :key="indexMarca">
+          <button @click="clickedMarca(indexMarca)" :class="{'active': isClickedMarca[indexMarca]}">{{marca}}</button>
+          <!-- {{processMarcas}} -->
+        </div>
       </div>
+      <div class="tags">Tags</div>
       <div class="column">
-          <p class="tags">Tags</p>
-            <button class="buttons">espiga</button>
-            <button class="buttons">crochet</button>
-            <button class="buttons">thread</button>
-            <button class="buttons">espiga</button>
-            <button class="buttons">crochet</button>
-            <button class="buttons">thread</button>
-            <button class="buttons">espiga</button>
-            <button class="buttons">crochet</button>
-            <button class="buttons">thread</button>
-            <button class="buttons">espiga</button>
-            <button class="buttons">crochet</button>
-            <button class="buttons">thread</button>
+          <div v-for="(tag, indexTag) in tags" :key="indexTag">
+             <button @click="clickedTag(indexTag)" :class="{'active': isClickedTag[indexTag]}">{{tag}}</button>
+            <!-- {{processTags}} -->
+          </div>
       </div>
     </div>
     <content>
@@ -56,10 +40,18 @@ export default {
   data: function () {
     return {
       images: [],
+      tags: ['nylon', 'espiga', 'omega', 'crochet', 'thread', 'bordado'],
+      marcas: ['NE_9', 'NE_90', 'NE_44'],
+      isClickedTag: [],
+      isClickedMarca: [],
       index: null
     }
   },
-
+  beforeMount () {
+    // set all values to false
+    this.marcas.forEach((marca, indexMarca) => this.$set(this.isClickedMarca, indexMarca, false))
+    this.tags.forEach((tag, indexTag) => this.$set(this.isClickedTag, indexTag, false))
+  },
   methods: {
     fetchImgs: function () {
       axios.get('http://104.248.234.33:8080/estambres-gallery-service/photos').then((response) => (
@@ -67,6 +59,15 @@ export default {
       ), (error) => {
         console.log(error)
       })
+    },
+    clickedTag (indexTag) {
+      // toggle the active class
+      this.$set(this.isClickedTag, indexTag, !this.isClickedTag[indexTag])
+      console.log(this.isClickedTag)
+    },
+    clickedMarca (indexMarca) {
+      this.$set(this.isClickedMarca, indexMarca, !this.isClickedMarca[indexMarca])
+      console.log(this.isClickedMarca)
     }
   },
   computed: {
@@ -74,6 +75,10 @@ export default {
       let imagesData = this.images
       return _.map(imagesData, el => _.filter(el, function (value, key) { return key.startsWith('url') })).flat(1)
     }
+    // processTags: function () {
+    //   let tagsData = this.images
+    //   return _.map(tagsData, el => _.filter(el, function (value, key) { return key.startsWith('tema') })).flat(1)
+    // }
   },
   mounted: function () {
     this.fetchImgs()
@@ -86,8 +91,8 @@ export default {
 
 <style scoped>
   .image {
-      width: 200px;
-      height: 250px;
+      width: 180px;
+      height: 200px;
       float: left;
       padding: 5px;
       background-size: cover;
@@ -106,12 +111,12 @@ export default {
   }
 }
 /* Additions for button tag filter */
-  #buttons {
+#buttons {
     text-align: center;
     margin: 30px;
-  }
+}
 
-  button {
+button {
     background-color: #d7d7d7;
     border: none;
     padding: 3px 10px 4px 10px;
@@ -119,24 +124,25 @@ export default {
     color: #333;
     font-family: 'Karla', sans-serif;
     font-size: 100%;
-  }
+}
 
-  button:hover, button.active {
+button:hover, button.active {
     background-color: #00cccc;
     color: #fff;
     cursor: pointer;
-  }
+}
 
-  .marca{
-    font-size:  1.875em;
-    font-family: 'Karla', sans-serif;
-      color: #333;
-  }
-
-  .tags{
-    font-size: 1.875em;
-    font-family: 'Karla', sans-serif;
-      color: #333;
-  }
+.tags{
+  font-size: 1.875em;
+  font-family: 'Karla', sans-serif;
+  color: #333;
+}
+.active {
+  background: red
+}
+.column {
+  display: flex;
+  padding: 5px;
+}
 
 </style>
