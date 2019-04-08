@@ -88,12 +88,6 @@ export default {
       let imagesData = this.images
       return _.map(imagesData, el => _.filter(el, function (value, key) { return key.startsWith('url') })).flat(1)
     }
-    // filterTags: function () {
-    //   let tagsSelected = _(this.isClickedTag).pickBy(_.identity).keys().value()
-    //   let tagsSelectedSingle = tagsSelected.map(s => `'${s}'`).join(', ')
-    //   console.log(tagsSelectedSingle)
-    //   if (tagsSelectedSingle === '0') { return 'naylon' } else if (tagsSelectedSingle === '1') { return 'nalgas' }
-    // }
   },
   mounted: function () {
     this.fetchImgs()
