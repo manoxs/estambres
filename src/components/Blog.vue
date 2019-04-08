@@ -12,7 +12,7 @@
       <div class="column">
           <div v-for="(tag, indexTag) in tags" :key="indexTag">
              <button @click="clickedTag(indexTag)" :class="{'active': isClickedTag[indexTag]}">{{tag}}</button>
-            <!-- {{processTags}} -->
+            <!-- {{filterTags}} -->
           </div>
       </div>
     </div>
@@ -60,12 +60,25 @@ export default {
         console.log(error)
       })
     },
-    clickedTag (indexTag) {
+    clickedTag: function (indexTag) {
       // toggle the active class
       this.$set(this.isClickedTag, indexTag, !this.isClickedTag[indexTag])
-      console.log(this.isClickedTag)
+      let tagsSelectedSingle = _.keys(_.pickBy(this.isClickedTag, _.identity))
+      if (tagsSelectedSingle.indexOf('0') >= 0) {
+        console.log('naylon')
+      } if (tagsSelectedSingle.indexOf('1') >= 0) {
+        console.log('espiga')
+      } if (tagsSelectedSingle.indexOf('2') >= 0) {
+        console.log('omega')
+      } if (tagsSelectedSingle.indexOf('3') >= 0) {
+        console.log('crochet')
+      } if (tagsSelectedSingle.indexOf('4') >= 0) {
+        console.log('thread')
+      } if (tagsSelectedSingle.indexOf('5') >= 0) {
+        console.log('bordado')
+      }
     },
-    clickedMarca (indexMarca) {
+    clickedMarca: function (indexMarca) {
       this.$set(this.isClickedMarca, indexMarca, !this.isClickedMarca[indexMarca])
       console.log(this.isClickedMarca)
     }
@@ -75,9 +88,11 @@ export default {
       let imagesData = this.images
       return _.map(imagesData, el => _.filter(el, function (value, key) { return key.startsWith('url') })).flat(1)
     }
-    // processTags: function () {
-    //   let tagsData = this.images
-    //   return _.map(tagsData, el => _.filter(el, function (value, key) { return key.startsWith('tema') })).flat(1)
+    // filterTags: function () {
+    //   let tagsSelected = _(this.isClickedTag).pickBy(_.identity).keys().value()
+    //   let tagsSelectedSingle = tagsSelected.map(s => `'${s}'`).join(', ')
+    //   console.log(tagsSelectedSingle)
+    //   if (tagsSelectedSingle === '0') { return 'naylon' } else if (tagsSelectedSingle === '1') { return 'nalgas' }
     // }
   },
   mounted: function () {
@@ -126,7 +141,13 @@ button {
     font-size: 100%;
 }
 
-button:hover, button.active {
+button:hover {
+    background-color: #0052cc;
+    color: #fff;
+    cursor: pointer;
+}
+
+button.active {
     background-color: #00cccc;
     color: #fff;
     cursor: pointer;
