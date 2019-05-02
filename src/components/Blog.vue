@@ -44,6 +44,7 @@ export default {
       marcas: ['NE_9', 'NE_90', 'NE_44'],
       isClickedTag: [],
       isClickedMarca: [],
+      tag: [],
       index: null
     }
   },
@@ -53,8 +54,20 @@ export default {
     this.tags.forEach((tag, indexTag) => this.$set(this.isClickedTag, indexTag, false))
   },
   methods: {
-    fetchImgs: function () {
-      axios.get('http://104.248.234.33:8080/estambres-gallery-service/photos').then((response) => (
+    // fetchImgs: function () {
+    //   axios.get('http://104.248.234.33:8080/estambres-gallery-service/photos').then((response) => (
+    //     this.images = response.data
+    //   ), (error) => {
+    //     console.log(error)
+    //   })
+    // },
+    fetchImgs: function (tag) {
+      var request = {
+        params: {
+          tag: this.tag
+        }
+      }
+      axios.get('http://104.248.234.33:8080/estambres-gallery-service/photos/?', request).then((response) => (
         this.images = response.data
       ), (error) => {
         console.log(error)
@@ -64,19 +77,31 @@ export default {
       // toggle the active class
       this.$set(this.isClickedTag, indexTag, !this.isClickedTag[indexTag])
       let tagsSelectedSingle = _.keys(_.pickBy(this.isClickedTag, _.identity))
+      let tag = this.tag
       if (tagsSelectedSingle.indexOf('0') >= 0) {
-        console.log('naylon')
-      } if (tagsSelectedSingle.indexOf('1') >= 0) {
-        console.log('espiga')
-      } if (tagsSelectedSingle.indexOf('2') >= 0) {
-        console.log('omega')
-      } if (tagsSelectedSingle.indexOf('3') >= 0) {
-        console.log('crochet')
-      } if (tagsSelectedSingle.indexOf('4') >= 0) {
-        console.log('thread')
-      } if (tagsSelectedSingle.indexOf('5') >= 0) {
-        console.log('bordado')
+        tag.push('naylon')
+        // console.log(tag)
+      } else {
+        tag.pop('naylon')
       }
+      if (tagsSelectedSingle.indexOf('1') >= 0) {
+        tag.push('espiga')
+        // console.log(tag)
+      } if (tagsSelectedSingle.indexOf('2') >= 0) {
+        tag.push('omega')
+        // console.log(tag)
+      } if (tagsSelectedSingle.indexOf('3') >= 0) {
+        tag.push('crochet')
+        // console.log(tag)
+      } if (tagsSelectedSingle.indexOf('4') >= 0) {
+        tag.push('thread')
+        // console.log(tag)
+      } if (tagsSelectedSingle.indexOf('5') >= 0) {
+        tag.push('bordado')
+        // console.log(tag)
+      }
+      console.log(tag)
+      this.fetchImgs(tag)
     },
     clickedMarca: function (indexMarca) {
       this.$set(this.isClickedMarca, indexMarca, !this.isClickedMarca[indexMarca])
